@@ -1,8 +1,26 @@
+using Microsoft.EntityFrameworkCore;
+using WebStore.DAL;
+using WebStore.Services.ConcreteServices;
+using WebStore.Services.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllersWithViews();
+
+// Konfiguracja Entity Framework
+builder.Services.AddDbContext<WebStoreDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Konfiguracja AutoMapper
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+
+// Rejestracja serwisów
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
+builder.Services.AddScoped<IStoreService, StoreService>();
+builder.Services.AddScoped<IAddressService, AddressService>();
 
 var app = builder.Build();
 

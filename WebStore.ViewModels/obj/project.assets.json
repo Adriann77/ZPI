@@ -1,11 +1,30 @@
 {
   "version": 3,
   "targets": {
-    "net6.0": {}
+    "net6.0": {
+      "WebStore.Model/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/WebStore.Model.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/WebStore.Model.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "WebStore.Model/1.0.0": {
+      "type": "project",
+      "path": "../WebStore.Model/WebStore.Model.csproj",
+      "msbuildProject": "../WebStore.Model/WebStore.Model.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net6.0": []
+    "net6.0": [
+      "WebStore.Model >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "/Users/adrian/.nuget/packages/": {}
@@ -31,7 +50,11 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "/Users/adrian/Desktop/studia/ZPI/WebStore.Model/WebStore.Model.csproj": {
+              "projectPath": "/Users/adrian/Desktop/studia/ZPI/WebStore.Model/WebStore.Model.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

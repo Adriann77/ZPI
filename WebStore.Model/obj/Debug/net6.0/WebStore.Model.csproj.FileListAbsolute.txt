@@ -1,0 +1,12 @@
+/Users/adrian/Desktop/studia/ZPI/WebStore.Model/bin/Debug/net6.0/WebStore.Model.deps.json
+/Users/adrian/Desktop/studia/ZPI/WebStore.Model/bin/Debug/net6.0/WebStore.Model.dll
+/Users/adrian/Desktop/studia/ZPI/WebStore.Model/bin/Debug/net6.0/WebStore.Model.pdb
+/Users/adrian/Desktop/studia/ZPI/WebStore.Model/obj/Debug/net6.0/WebStore.Model.csproj.AssemblyReference.cache
+/Users/adrian/Desktop/studia/ZPI/WebStore.Model/obj/Debug/net6.0/WebStore.Model.GeneratedMSBuildEditorConfig.editorconfig
+/Users/adrian/Desktop/studia/ZPI/WebStore.Model/obj/Debug/net6.0/WebStore.Model.AssemblyInfoInputs.cache
+/Users/adrian/Desktop/studia/ZPI/WebStore.Model/obj/Debug/net6.0/WebStore.Model.AssemblyInfo.cs
+/Users/adrian/Desktop/studia/ZPI/WebStore.Model/obj/Debug/net6.0/WebStore.Model.csproj.CoreCompileInputs.cache
+/Users/adrian/Desktop/studia/ZPI/WebStore.Model/obj/Debug/net6.0/WebStore.Model.dll
+/Users/adrian/Desktop/studia/ZPI/WebStore.Model/obj/Debug/net6.0/refint/WebStore.Model.dll
+/Users/adrian/Desktop/studia/ZPI/WebStore.Model/obj/Debug/net6.0/WebStore.Model.pdb
+/Users/adrian/Desktop/studia/ZPI/WebStore.Model/obj/Debug/net6.0/ref/WebStore.Model.dll
