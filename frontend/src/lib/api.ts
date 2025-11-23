@@ -3,11 +3,68 @@ import { Product, Order, StationaryStore, Address, Invoice } from '@/types';
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7000/api';
 
+interface LoginRequest {
+  Login: string;
+  Password: string;
+}
+
+interface LoginResponse {
+  access_token: string;
+  expires_in: string;
+}
+
 class ApiClient {
   private baseUrl: string;
+  private token: string | null = null;
 
   constructor(baseUrl: string) {
     this.baseUrl = baseUrl;
+    // Load token from localStorage on initialization
+    if (typeof window !== 'undefined') {
+      this.token = localStorage.getItem('auth_token');
+    }
+  }
+
+  setToken(token: string | null) {
+    this.token = token;
+    if (typeof window !== 'undefined') {
+      if (token) {
+        localStorage.setItem('auth_token', token);
+      } else {
+        localStorage.removeItem('auth_token');
+      }
+    }
+  }
+
+  getToken(): string | null {
+    return this.token;
+  }
+
+  isAuthenticated(): boolean {
+    return this.token !== null;
+  }
+
+  async login(credentials: LoginRequest): Promise<LoginResponse> {
+    const formData = new FormData();
+    formData.append('Login', credentials.Login);
+    formData.append('Password', credentials.Password);
+
+    const response = await fetch(`${this.baseUrl}/AccountApi/Login`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Login failed: ${response.status}`);
+    }
+
+    const loginResponse: LoginResponse = await response.json();
+    this.setToken(loginResponse.access_token);
+    return loginResponse;
+  }
+
+  logout() {
+    this.setToken(null);
   }
 
   private async request<T>(
@@ -15,17 +72,29 @@ class ApiClient {
     options: RequestInit = {},
   ): Promise<T> {
     const url = `${this.baseUrl}${endpoint}`;
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    };
+
+    // Add Authorization header if token exists
+    if (this.token) {
+      headers['Authorization'] = `Bearer ${this.token}`;
+    }
+
     const config: RequestInit = {
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      },
+      headers,
       ...options,
     };
 
     const response = await fetch(url, config);
 
     if (!response.ok) {
+      if (response.status === 401) {
+        // Token expired or invalid, clear it
+        this.logout();
+        throw new Error('Authentication required');
+      }
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
@@ -55,6 +124,12 @@ class ApiClient {
     });
   }
 
+  async deleteProduct(id: number): Promise<boolean> {
+    return this.request<boolean>(`/products/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
   // Orders
   async getOrders(): Promise<Order[]> {
     return this.request<Order[]>('/orders');
@@ -75,6 +150,12 @@ class ApiClient {
     return this.request<Order>(`/orders/${id}`, {
       method: 'PUT',
       body: JSON.stringify(order),
+    });
+  }
+
+  async deleteOrder(id: number): Promise<boolean> {
+    return this.request<boolean>(`/orders/${id}`, {
+      method: 'DELETE',
     });
   }
 
@@ -101,6 +182,12 @@ class ApiClient {
     });
   }
 
+  async deleteStore(id: number): Promise<boolean> {
+    return this.request<boolean>(`/stores/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
   // Addresses
   async getAddresses(): Promise<Address[]> {
     return this.request<Address[]>('/addresses');
@@ -121,6 +208,12 @@ class ApiClient {
     return this.request<Address>(`/addresses/${id}`, {
       method: 'PUT',
       body: JSON.stringify(address),
+    });
+  }
+
+  async deleteAddress(id: number): Promise<boolean> {
+    return this.request<boolean>(`/addresses/${id}`, {
+      method: 'DELETE',
     });
   }
 
@@ -146,6 +239,13 @@ class ApiClient {
       body: JSON.stringify(invoice),
     });
   }
+
+  async deleteInvoice(id: number): Promise<boolean> {
+    return this.request<boolean>(`/invoices/${id}`, {
+      method: 'DELETE',
+    });
+  }
 }
 
 export const apiClient = new ApiClient(API_BASE_URL);
+export type { LoginRequest, LoginResponse };

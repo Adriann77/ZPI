@@ -12,10 +12,12 @@ export interface Product {
 
 export interface AddOrUpdateProduct {
   name: string;
-  description?: string;
+  description: string;
   price: number;
-  stockQuantity: number;
-  category?: string;
+  imageBytes?: number[];
+  weight: number;
+  categoryId: number;
+  supplierId: number;
 }
 
 // Order types
@@ -92,4 +94,15 @@ export interface AddOrUpdateInvoice {
   dueDate: string;
   totalAmount: number;
   status: string;
+}
+
+// Login types
+export interface LoginRequest {
+  Login: string;
+  Password: string;
+}
+
+export interface LoginResponse {
+  access_token: string;
+  expires_in: string;
 }
